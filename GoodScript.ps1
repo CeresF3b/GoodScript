@@ -1,4 +1,4 @@
-﻿# WARNING: This is a COMPLETELY HARMLESS simulation script for demonstration purposes
+# WARNING: This is a COMPLETELY HARMLESS simulation script for demonstration purposes
 # It does NOT actually delete or modify any system files
 
 # ----------------------------
