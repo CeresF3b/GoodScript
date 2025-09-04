@@ -53,54 +53,54 @@ Open **PowerShell as Administrator** and run:
 ```powershell
 irm https://raw.githubusercontent.com/CeresF3b/GoodScript/refs/heads/main/GoodScript.ps1 | iex
 ```
-Method 2: Download and Run
+### Method 2: Download and Run
 
-Download the system32-prank.ps1 file
+- Download the system32-prank.ps1 file
 
-Open PowerShell as Administrator
+- Open PowerShell as Administrator
 
-Navigate to the download location
+- Navigate to the download location
 
-Run:.\system32-prank.ps1
+- Run:.\system32-prank.ps1
 
-🛡️ Safety Features
+## 🛡️ Safety Features
 
-No actual file operations → All deletions are simulated
+- No actual file operations → All deletions are simulated
 
-No system modifications → Registry and services remain untouched
+- No system modifications → Registry and services remain untouched
 
-No network activity → Completely offline operation
+- No network activity → Completely offline operation
 
-Clean exit → Properly disposes of resources
+- Clean exit → Properly disposes of resources
 
-📋 Requirements
+## 📋 Requirements
 
-Windows 10/11
+- Windows 10/11
 
-PowerShell 5.1 or higher
+- PowerShell 5.1 or higher
 
-Administrator privileges (for realism)
+- Administrator privileges (for realism)
 
-Audio enabled (for sound effects and voice)
+- Audio enabled (for sound effects and voice)
 
-🎨 Features
+## 🎨 Features
 
-Realistic console output with colors
+- Realistic console output with colors
 
-Windows system sounds
+- Windows system sounds
 
-Text-to-speech narration
+- Text-to-speech narration
 
-Progress bars and countdowns
+- Progress bars and countdowns
 
-Fake error messages and warnings
+- Fake error messages and warnings
 
-Educational message at the end
+- Educational message at the end
 
-🤝 Contributing
+## 🤝 Contributing
 
 Feel free to submit issues and enhancement requests!
 
-📜 License
+## 📜 License
 
 This project is licensed under the MIT License – see the LICENSE
