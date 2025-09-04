@@ -35,49 +35,32 @@ Open PowerShell as Administrator and run:
 
 ```powershell
 irm [YOUR-LINK-HERE] | iex
+```
 
-Method 2: Download and Run
-
+Method 2: Download and Run:
     Download the system32-prank.ps1 file
-
     Open PowerShell as Administrator
-
     Navigate to the download location
-
     Run: .\system32-prank.ps1
 
-🛡️ Safety Features
-
+🛡️ Safety Features:
     No actual file operations: All deletions are simulated
-
     No system modifications: Registry and services remain untouched
-
     No network activity: Completely offline operation
-
     Clean exit: Properly disposes of resources
-
-📋 Requirements
-
+    
+📋 Requirements:
     Windows 10/11
-
     PowerShell 5.1 or higher
-
     Administrator privileges (for realism)
-
     Audio enabled (for sound effects and voice)
 
-🎨 Features
-
+🎨 Features:
     Realistic console output with colors
-
     Windows system sounds
-
     Text-to-speech narration
-
     Progress bars and countdowns
-
     Fake error messages and warnings
-
     Educational message at the end
 
 🤝 Contributing
