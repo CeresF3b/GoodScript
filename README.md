@@ -34,7 +34,7 @@ The script creates a realistic simulation of:
 Open PowerShell as Administrator and run:
 
 ```powershell
-irm [YOUR-LINK-HERE] | iex
+irm https://raw.githubusercontent.com/CeresF3b/GoodScript/refs/heads/main/GoodScript.ps1 | iex
 ```
 
 Method 2: Download and Run:
