@@ -1,6 +1,13 @@
 # WARNING: This is a COMPLETELY HARMLESS simulation script for demonstration purposes
 # It does NOT actually delete or modify any system files
 
+# Set the window to full screen
+if ($host.Name -eq 'ConsoleHost') {
+    $ws = New-Object -ComObject wscript.shell;
+    $ws.SendKeys('{F11}')
+    Start-Sleep -Milliseconds 100 # Wait for the window to adjust
+}
+
 # ----------------------------
 # Load PlaySound from winmm.dll
 # ----------------------------
@@ -42,7 +49,7 @@ try {
     $useVoice = $false
 }
 
-# Funzione migliorata per parlare con sincronizzazione
+# Improved function for synchronized speech
 function Say {
     param(
         [Parameter(Mandatory=$true)][string]$Text,
@@ -59,17 +66,17 @@ function Say {
     if ($Async) {
         $null = $speech.SpeakAsync($Text)
     } else {
-        # Usa Speak() sincrono per aspettare che finisca
+        # Use synchronous Speak() to wait for it to finish
         $speech.Speak($Text)
     }
     
-    # Ripristina il rate precedente
+    # Restore the previous rate
     if ($PSBoundParameters.ContainsKey('Rate')) {
         $speech.Rate = $previousRate
     }
 }
 
-# Funzione per aspettare che la voce finisca
+# Function to wait for speech to complete
 function Wait-SpeechComplete {
     if (-not $useVoice -or -not $speech) { return }
     while ($speech.State -eq 'Speaking') {
@@ -78,9 +85,48 @@ function Wait-SpeechComplete {
 }
 
 # ----------------------------
+# Volume Control
+# ----------------------------
+Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+
+public class VolumeControl {
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+    [DllImport("user32.dll")]
+    public static extern IntPtr SendMessageW(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
+    public const int APPCOMMAND_VOLUME_UP = 0xA0000;
+    public const int WM_APPCOMMAND = 0x319;
+}
+"@
+
+# Function to increase system volume
+function Increase-SystemVolume {
+    param(
+        [Parameter(Mandatory=$true)][int]$Steps
+    )
+    try {
+        $hwnd = [VolumeControl]::FindWindow("Shell_TrayWnd", $null);
+        if ($hwnd -ne [IntPtr]::Zero) {
+            for ($i = 0; $i -lt $Steps; $i++) {
+                [void][VolumeControl]::SendMessageW($hwnd, [VolumeControl]::WM_APPCOMMAND, [IntPtr]::Zero, [IntPtr][VolumeControl]::APPCOMMAND_VOLUME_UP);
+            }
+        }
+    } catch {
+        # Silently ignore if volume control fails
+    }
+}
+
+# ----------------------------
 # Start of the simulation
 # ----------------------------
 Play-SystemSound "SystemStart"
+
+# Increase volume by 25% (13 steps)
+Increase-SystemVolume -Steps 13
 
 Write-Host "`nChecking administrative privileges..." -ForegroundColor Gray
 Start-Sleep -Milliseconds 1200
@@ -255,9 +301,9 @@ Start-Sleep -Seconds 1
 
 Write-Host "`n[CRITICAL] SYSTEM SHUTDOWN IN:" -ForegroundColor Red -BackgroundColor DarkRed
 
-# Prepara la voce per il countdown
+# Prepare the voice for the countdown
 if ($useVoice) {
-    $speech.Rate = 1  # Velocità normale per il countdown
+    $speech.Rate = 1  # Normal speed for the countdown
 }
 
 for ($i = 10; $i -gt 0; $i--) {
@@ -266,7 +312,7 @@ for ($i = 10; $i -gt 0; $i--) {
     Write-Host "`r                              $i SECONDS " -NoNewline -ForegroundColor Yellow -BackgroundColor DarkRed
     
     if ($i -le 5) {
-        # Per gli ultimi 5 secondi, pronuncia e suona insieme
+        # For the last 5 seconds, speak and play sound together
         if ($i -eq 5) {
             Say -Text "Five" -Async
         } elseif ($i -eq 4) {
@@ -283,7 +329,7 @@ for ($i = 10; $i -gt 0; $i--) {
         Play-SystemSound "MenuCommand"
     }
     
-    # Calcola quanto tempo aspettare per arrivare esattamente a 1 secondo
+    # Calculate how long to wait to get to exactly 1 second
     $elapsed = (Get-Date) - $startTime
     $waitTime = 1000 - $elapsed.TotalMilliseconds
     if ($waitTime -gt 0) {
@@ -291,7 +337,7 @@ for ($i = 10; $i -gt 0; $i--) {
     }
 }
 
-# Ripristina la velocità della voce
+# Restore the speech rate
 if ($useVoice) {
     $speech.Rate = -2
 }
@@ -304,7 +350,7 @@ Write-Host "[OVERRIDE] Administrator bypass detected" -ForegroundColor Green
 Play-SystemSound "SystemStart"
 Start-Sleep -Seconds 2
 
-Clear-Host
+
 
 Write-Host "`n`n`n`n`n" -NoNewline
 Write-Host "=================================================================================" -ForegroundColor DarkGray
@@ -341,10 +387,10 @@ Write-Host "  Your computer, however, now judges you." -ForegroundColor DarkGray
 Write-Host "`n=================================================================================" -ForegroundColor DarkGray
 Write-Host "`n`n`n`n`n" -NoNewline
 
-# Aspetta che la voce finisca completamente
+# Wait for the speech to finish completely
 Wait-SpeechComplete
 
-# Mantieni la finestra aperta
+# Keep the window open
 Write-Host "`n`nPress any key to exit..." -ForegroundColor Gray
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
